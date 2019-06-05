@@ -71,7 +71,8 @@ export class SearchAdapter {
       httpQuery.request = JSON.stringify(ElasticsearchQueryBody)
     }
     url = url + '/' + encodeURIComponent(Request.index) + '/' + encodeURIComponent(Request.type) + '/_search'
-    url = url + '?' + queryString.stringify(httpQuery)
+    const query: any = httpQuery
+    url = url + '?' + queryString.stringify(query)
     return fetch(url, { method: rootStore.state.config.elasticsearch.queryMethod,
       mode: 'cors',
       headers: {

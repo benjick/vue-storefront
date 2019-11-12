@@ -11,6 +11,7 @@ import { isOptionAvailableAsync } from '@vue-storefront/core/modules/catalog/hel
 import omit from 'lodash-es/omit'
 import Composite from '@vue-storefront/core/mixins/composite'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import { formatProductLink } from '@vue-storefront/core/modules/url/helpers'
 
 export default {
   name: 'Product',
@@ -163,8 +164,13 @@ export default {
     },
     onStateCheck () {
       if (this.parentProduct && this.parentProduct.id !== this.product.id) {
+        const newUrl = formatProductLink({
+          sku: this.parentProduct.sku,
+          url_path: this.parentProduct.url_path,
+          configurable_children: []
+        }, currentStoreView().storeCode)
         Logger.log('Redirecting to parent, configurable product', this.parentProduct.sku)()
-        this.$router.replace({ name: 'product', params: { parentSku: this.parentProduct.sku, childSku: this.product.sku, slug: this.parentProduct.slug } })
+        this.$router.replace(newUrl)
       }
     },
     onAfterPriceUpdate (product) {
